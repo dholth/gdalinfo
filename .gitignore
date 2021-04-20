@@ -1,0 +1,9 @@
+.*
+*.egg-info
+*.so
+build
+dist
+__pycache__
+_gdalinfo*
+__gdalinfo*
+PKG-INFO
