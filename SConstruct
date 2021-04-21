@@ -47,16 +47,14 @@ extension = env.SharedLibrary(
     LIBPREFIX="",
     SHLIBSUFFIX=SHLIBSUFFIX,
     LIBS=["gdal"],
-    parse_flags="-DNO_BF_ASM" + " -DPy_LIMITED_API=0x03030000"
-    if use_py_limited
-    else "",
+    parse_flags="-DPy_LIMITED_API=0x03030000" if use_py_limited else "",
 )
 
 # Only *.py is included automatically by setup2toml.
 # Add extra 'purelib' files or package_data here.
 py_source = Glob("src/gdalinfo/*.py")
 
-platlib = env.Whl("platlib", py_source + extension, root="")
+platlib = env.Whl("platlib", py_source + extension, root=metadata["src_root"])
 whl = env.WhlFile(source=platlib)
 
 # Add automatic source files, plus any other needed files.

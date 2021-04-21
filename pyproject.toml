@@ -2,7 +2,7 @@
 
 [tool.enscons]
 name="gdalinfo"
-version="0.0.1"
+version="0.0.2"
 packages=['gdalinfo']
 install_requires=['cffi']
 description="PyPy-compatible wrapper for GDALINFO() to read GIS metadata"
