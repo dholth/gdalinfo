@@ -6,6 +6,7 @@ version="0.0.2"
 packages=['gdalinfo']
 install_requires=['cffi']
 description="PyPy-compatible wrapper for GDALINFO() to read GIS metadata"
+description_file="README.rst"
 license="MIT"
 classifiers=[
   "Programming Language :: Python :: 3",
