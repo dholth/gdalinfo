@@ -26,17 +26,17 @@ def info(path):
         raise GDALException()
 
     try:
-        options = ffi.gc(
+        with ffi.gc(
             lib.GDALInfoOptionsNew(
                 [ffi.new("char[]", arg) for arg in b"-json -mdd all".split()]
                 + [ffi.NULL],
                 ffi.NULL,
             ),
             lib.GDALInfoOptionsFree,
-        )
-        info = ffi.gc(lib.GDALInfo(dataset, options), lib.VSIFree)
-        if info == ffi.NULL:
-            raise GDALException()
+        ) as options:
+            info = ffi.gc(lib.GDALInfo(dataset, options), lib.VSIFree)
+            if info == ffi.NULL:
+                raise GDALException()
     finally:
         lib.GDALClose(dataset)
 
