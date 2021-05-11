@@ -28,6 +28,18 @@ void VSIFree (void *);   // free gdalinfo string with vsifree
 typedef int CPLErrorNum;
 CPLErrorNum CPLGetLastErrorNo (void);
 const char* CPLGetLastErrorMsg (void);
+
+// Spatial Reference System
+typedef void *OGRSpatialReferenceH;
+
+typedef int OGRErr;
+
+// Accepts WKT
+OGRSpatialReferenceH OSRNewSpatialReference(const char*);
+void OSRDestroySpatialReference(OGRSpatialReferenceH);
+OGRErr OSRImportFromWkt(OGRSpatialReferenceH, char **);
+OGRErr OSRExportToWkt(OGRSpatialReferenceH, char**);
+// Caller must free returned string with CPLFree (VSIFree)
 """
 )
 
@@ -39,6 +51,7 @@ ffibuilder.set_source(
     "_gdalinfo",
     """
      #include "gdal/gdal_utils.h"   // the C header of the library
+     #include "gdal/ogr_srs_api.h"
 """,
     libraries=["gdal"],
 )  # library name, for the linker

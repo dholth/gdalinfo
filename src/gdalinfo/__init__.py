@@ -41,3 +41,31 @@ def info(path):
         lib.GDALClose(dataset)
 
     return json.loads(ffi.string(info).decode("utf-8"))
+
+
+class SpatialReference:
+    def __init__(self, wkt=ffi.NULL):
+        self._handle = ffi.gc(
+            lib.OSRNewSpatialReference(ffi.NULL), lib.OSRDestroySpatialReference
+        )
+        if wkt:
+            self.importFromWkt(wkt)
+
+    def importFromWkt(self, wkt):
+        err = lib.OSRImportFromWkt(
+            self._handle, [ffi.new("char[]", wkt.encode("utf-8"))]
+        )
+        if err != 0:
+            raise GDALException()
+
+    def exportToWkt(self):
+        """
+        Returned WKT can be simpler than imported WKT.
+        """
+        rc = ffi.new("char*[1]")
+        err = lib.OSRExportToWkt(self._handle, rc)
+        if err != 0:
+            raise GDALException()
+        wkt = ffi.string(rc[0]).decode("utf-8")
+        lib.VSIFree(rc[0])
+        return wkt
